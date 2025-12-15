@@ -2,6 +2,8 @@
 
 <img width="1604" height="932" alt="main" src="https://github.com/user-attachments/assets/3e272755-07fe-4420-b0b9-f2014bbe8290" />
 
+프로그램 다운로드: [구글 드라이브](https://drive.google.com/drive/folders/1-eWL55uQGM83Eqm5irc-tMh6J-QYOVss)
+
 ## 목차
 
 1. [프로그램 소개](#1-프로그램-소개)
