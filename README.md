@@ -1,6 +1,6 @@
 # TradingView 웹훅 고잉봇 - 사용자 설명서
 
-<img width="1604" height="932" alt="main" src="https://github.com/user-attachments/assets/3e272755-07fe-4420-b0b9-f2014bbe8290" />
+<img width="1850" height="982" alt="image" src="https://github.com/user-attachments/assets/320a4275-144e-475e-b8c6-64c7ee33a346" />
 
 프로그램 다운로드: [구글 드라이브](https://drive.google.com/drive/folders/1-eWL55uQGM83Eqm5irc-tMh6J-QYOVss)
 설치방법: [GitHub Wiki](https://github.com/trader-going/tradingview-webhook-bot/wiki/%EA%B3%A0%EC%9E%89%EB%B4%87-%EC%84%B8%ED%8C%85-%EB%B0%A9%EB%B2%95)
