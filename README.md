@@ -1,5 +1,7 @@
 <div align="center">
 
+<img width="200" height="200" alt="image" src="https://github.com/user-attachments/assets/291aefa4-072f-4aaa-9a33-4f17613424a7" />
+
 # TradingView 웹훅 고잉봇
 
 **TradingView 알림 → 자동 주문 실행 데스크톱 애플리케이션**
