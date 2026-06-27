@@ -1,133 +1,62 @@
 //@version=6
-strategy("웹훅 예제", overlay=true, precision=2, pyramiding=1,
+strategy("GoingBot Webhook Example", overlay=true, precision=2, pyramiding=1,
      initial_capital=100000,
      commission_type=strategy.commission.percent, commission_value=0.2)
 
-// =====================================================================================================================
-// ✅ 이 스크립트의 목표
-// 1) 백테스트는 "항상 잘 돌아가게" 최대한 단순하게(고정 수량 btQty 사용)
-// 2) 웹훅(TradingView Alert)에는 우리가 원하는 payload(JSON 문자열)만 정확히 실어 보내기
-//
-// ✅ TradingView 얼러트 설정 방법
-// - Alert 생성 시 "Message" 칸에 아래 한 줄만 넣기
-//      {{strategy.order.alert_message}}
-// - 그러면 strategy.entry/close의 alert_message에 넣은 문자열이 그대로 웹훅으로 전송됨
-//
-// ✅ 핵심 아이디어
-// - 백테스트용 qty(숫자)와 웹훅용 qty(문자열)를 "완전히 분리"한다.
-//   - 백테스트용 qty  : btQty (float 숫자) → TradingView 내부 백테스트 엔진이 사용
-//   - 웹훅용 qty 문자열: entryQtyStr / closeQtyStr → 서버가 해석해서 주문에 사용
-//
-// 왜 분리하나?
-// - "100USDT" / "50,000KRW" / "25%" 같은 문자열은 TradingView 백테스트 엔진이 직접 이해 못함
-// - 무리해서 파싱하려 하면(tonumber 실패/최소주문단위/라운딩) 주문이 0이 되어 백테가 안 돌아가는 일이 흔함
-// =====================================================================================================================
+// GoingBot TradingView alert example.
+// Alert message must be exactly:
+// {{strategy.order.alert_message}}
 
+gWebhook = "GoingBot Webhook"
+webhookSecret = input.string("", "Webhook Secret", group=gWebhook)
+exchangeName = input.string("BINANCE", "Exchange", options=["UPBIT", "BITHUMB", "BINANCE", "BYBIT", "OKX"], group=gWebhook)
+symbolOverride = input.string("", "Symbol Override", group=gWebhook)
+leverage = input.int(1, "Leverage", minval=1, maxval=125, group=gWebhook)
+hedgeMode = input.bool(false, "Hedge Mode", group=gWebhook)
+entryQtyStr = input.string("100USDT", "Entry Qty", group=gWebhook)
+closeQtyStr = input.string("100%", "Close Qty", group=gWebhook)
 
-// ── 입력(웹훅용 문자열) ─────────────────────────────────────────────────────
-// 이 값들은 "백테스트 수량"이 아니라, 웹훅 payload에 담겨 서버로 넘어가는 문자열이다.
-// 서버 쪽에서 이 문자열을 보고 실제 주문수량을 계산/해석하도록 만들면 된다.
-g1 = "전략 세부"
-leverage   = input.int(1, "Leverage", minval=1, maxval=125, group=g1)
-entryQtyStr = input.string("100USDT", "Entry Qty (string)", group=g1)  // 예: 100USDT, 50000KRW, 25%, 0.01
-closeQtyStr = input.string("100%",    "Close Qty (string)", group=g1)  // 예: 100% (전량), 50% (절반), 0.01
+gBacktest = "Backtest"
+btQty = input.float(1, "Backtest Qty", minval=0.000001, group=gBacktest)
+startTime = input.time(timestamp("01 Jan 2000 00:00 +0000"), "Start", group=gBacktest)
+endTime = input.time(timestamp("01 Jan 2099 00:00 +0000"), "End", group=gBacktest)
 
-
-// ── 백테스트용 고정 수량(단순 테스트 목적) ───────────────────────────────────
-// TradingView 백테스트 엔진이 이해할 수 있는 "숫자"만 넣는다.
-// 백테스트에서는 btQty만 사용
-// entryQtyStr/closeQtyStr은 백테스트에 영향이 없다.
-g2 = "수량 (KRW, USDT, 비율, 코인수량)"
-btQty = input.float(1, "Backtest Qty", minval=0.000001, group=g2)
-
-
-// ── 기간 필터(옵션) ─────────────────────────────────────────────────────────
-// 특정 구간에서만 매매 신호가 발생하게 하고 싶을 때 사용.
-// (예: 2000~2099로 해두면 사실상 항상 true)
-// 만약 백테스트가 "아예 0건"이면 가장 먼저 이 inDate가 false가 아닌지 확인하는 것이 좋다.
-g3 = "백테스트 기간"
-startTime = input.time(timestamp("01 Jan 2000 00:00 +0000"), "Start", group=g3)
-endTime   = input.time(timestamp("01 Jan 2099 00:00 +0000"), "End", group=g3)
 inDate = time >= startTime and time <= endTime
 
+json_bool(bool value) =>
+    value ? "true" : "false"
 
-// ── 메시지 생성: 여기만 중요! ───────────────────────────────────────────────
-// 웹훅으로 내보낼 JSON 문자열을 만든다.
-// ⚠️ 주의: 여기에 들어가는 {{exchange}}, {{ticker}}, {{strategy.order.price}} 같은 것들은
-// TradingView가 얼러트 발송 시점에 치환(대입)해준다.
-// 즉, 이 문자열은 "그대로" alert_message로 넘기고,
-// 얼러트 메시지는 {{strategy.order.alert_message}} 로 받으면 된다.
-// 이 함수는 본인 전략에서도 바로 쓸 수 있다.
-build_msg(string action, string qtyStr) =>
-     '{"action":"' + action + '"' +
-     ',"exchange":"{{exchange}}"' +
-     ',"symbol":"{{ticker}}"' +
-     ',"price":"{{strategy.order.price}}"' +
+payload_symbol() =>
+    symbolOverride == "" ? syminfo.ticker : symbolOverride
+
+build_msg(string action, string qtyStr, string orderId) =>
+     '{"secret":"' + webhookSecret + '"' +
+     ',"id":"' + orderId + '-' + str.tostring(time) + '"' +
+     ',"action":"' + action + '"' +
+     ',"exchange":"' + exchangeName + '"' +
+     ',"symbol":"' + payload_symbol() + '"' +
+     ',"price":"' + str.tostring(close, format.mintick) + '"' +
      ',"qty":"' + qtyStr + '"' +
      ',"leverage":' + str.tostring(leverage) +
-     ',"time":"{{time}}"' +
+     ',"hedgeMode":' + json_bool(hedgeMode) +
+     ',"time":"' + str.tostring(time) + '"' +
      '}'
 
+longEntry = inDate and bar_index % 2 == 0 and strategy.position_size == 0
+longClose = inDate and bar_index % 2 == 1 and strategy.position_size > 0
 
-// ── 시그널(그냥 예제용) ─────────────────────────────────────────────────────
-// 매우 단순한 토글 예제:
-// - bar_index가 0,2,4,6... 짝수 bar에서 롱 진입
-// - 다음 bar(1,3,5,7... 홀수)에서 롱 청산
-//
-// 이렇게 하면 "무조건" 진입→청산이 번갈아 발생하므로 웹훅 테스트에 좋다.
-// 실제 전략에서는 여기 부분을 네 진짜 시그널로 교체하면 됨.
-//
-// 참고: position_size 조건 덕분에
-// - 포지션 없을 때만 entry
-// - 포지션 있을 때만 close
-// 형태가 유지된다.
-longEntry  = inDate and bar_index % 2 == 0 and strategy.position_size == 0
-longClose  = inDate and bar_index % 2 == 1 and strategy.position_size > 0
-
-// 숏도 테스트하고 싶으면 아래 주석만 해제하면 됨(현재는 꺼둔 상태)
-// shortEntry = inDate and bar_index % 4 == 2 and strategy.position_size == 0
-// shortClose = inDate and bar_index % 4 == 3 and strategy.position_size < 0
-
-
-// ── 주문: qty는 btQty로만, webhook qty는 문자열로만 ─────────────────────────
-// ⭐ 핵심 포인트(가장 중요)
-// - strategy.entry/close의 qty 파라미터는 TradingView 백테스트용 "숫자"만 넣는다 → btQty
-// - 웹훅으로 보낼 실제 주문 관련 값(예: 100USDT, 50%, 0.01)은 JSON payload의 qty 필드에 넣는다 → entryQtyStr/closeQtyStr
-//
-// 즉, 백테스트 계산과 실주문 수량 계산을 분리해서
-// "백테스트는 안정적으로 돌리고", "실주문은 서버에서 유연하게 처리"하는 구조다.
 if longEntry
-    // 백테스트: btQty로 진입
-    // 웹훅: action=LONG_ENTRY, qty=entryQtyStr(문자열)을 전송
-    strategy.entry("L", strategy.long, qty=btQty, alert_message=build_msg("LONG_ENTRY", entryQtyStr))
+    strategy.entry("L", strategy.long, qty=btQty, alert_message=build_msg("LONG_ENTRY", entryQtyStr, "L_ENTRY"))
 
 if longClose
-    // 백테스트: btQty로 청산
-    // 웹훅: action=LONG_CLOSE, qty=closeQtyStr(문자열)을 전송
-    strategy.close("L", qty=btQty, alert_message=build_msg("LONG_CLOSE", closeQtyStr))
+    strategy.close("L", qty=btQty, alert_message=build_msg("LONG_CLOSE", closeQtyStr, "L_CLOSE"))
 
-// 아래는 숏 테스트용(필요할 때만 주석 해제)
-// if shortEntry
-//     strategy.entry("S", strategy.short, qty=btQty, alert_message=build_msg("SHORT_ENTRY", entryQtyStr))
-
-// if shortClose
-//     strategy.close("S", qty=btQty, alert_message=build_msg("SHORT_CLOSE", closeQtyStr))
-
-
-// =====================================================================================================================
-// ✅ 서버(웹훅 수신측)에서 보통 하는 일 (참고용 설명)
-// - payload 예시:
-//   {
-//     "action":"LONG_ENTRY",
-//     "exchange":"BINANCE",
-//     "symbol":"BTCUSDT",
-//     "price":"43123.4",
-//     "qty":"100USDT",
-//     "leverage":3,
-//     "time":"2025-12-23T09:00:00Z"
-//   }
+// Short-side example. Uncomment when the strategy logic actually needs short orders.
+// shortEntry = inDate and bar_index % 4 == 2 and strategy.position_size == 0
+// shortClose = inDate and bar_index % 4 == 3 and strategy.position_size < 0
 //
-// - 서버는 qty가 "100USDT"면 현재가/레버리지/계정잔고 등을 기준으로 수량을 계산해 실제 주문을 넣는다.
-// - qty가 "50%"면 계좌 잔고의 50%로 주문하도록 계산한다.
-// - qty가 "100%"면 현재 포지션 전량 청산하도록 처리한다.
-// =====================================================================================================================
+// if shortEntry
+//     strategy.entry("S", strategy.short, qty=btQty, alert_message=build_msg("SHORT_ENTRY", entryQtyStr, "S_ENTRY"))
+//
+// if shortClose
+//     strategy.close("S", qty=btQty, alert_message=build_msg("SHORT_CLOSE", closeQtyStr, "S_CLOSE"))

@@ -1,637 +1,241 @@
 <div align="center">
 
-<img width="200" height="200" alt="image" src="https://github.com/user-attachments/assets/291aefa4-072f-4aaa-9a33-4f17613424a7" />
+<img width="160" height="160" alt="GoingBot" src="https://github.com/user-attachments/assets/291aefa4-072f-4aaa-9a33-4f17613424a7" />
 
-# TradingView 웹훅 고잉봇
+# GoingBot
 
-**TradingView 알림 → 자동 주문 실행 데스크톱 애플리케이션**
+**TradingView 웹훅 자동매매 데스크톱 앱**
 
-[![Version](https://img.shields.io/badge/version-0.3.0-00d4aa?style=for-the-badge)](https://github.com/trader-going/tradingview-webhook-bot)
-[![License](https://img.shields.io/badge/license-Personal_Use-blue?style=for-the-badge)](#-라이센스)
-[![Python](https://img.shields.io/badge/python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
-[![PyQt5](https://img.shields.io/badge/PyQt5-Desktop_GUI-41CD52?style=for-the-badge&logo=qt&logoColor=white)](https://riverbankcomputing.com/software/pyqt/)
-
-<br/>
-
-<img alt="GoingBot Screenshot" src="https://github.com/user-attachments/assets/cfafb0c4-d879-4a39-9161-4fbba0797064" width="800" />
+[![Latest Release](https://img.shields.io/github/v/release/trader-going/tradingview-webhook-bot?style=for-the-badge&label=release)](https://github.com/trader-going/tradingview-webhook-bot/releases/latest)
+[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS-111?style=for-the-badge)](#다운로드)
+[![License](https://img.shields.io/badge/license-Personal_Use-blue?style=for-the-badge)](#라이선스)
 
 <br/>
 
-[**고잉봇 다운로드**](https://drive.google.com/drive/folders/1-eWL55uQGM83Eqm5irc-tMh6J-QYOVss) · [**설치 가이드**](https://github.com/trader-going/tradingview-webhook-bot/wiki/%EA%B3%A0%EC%9E%89%EB%B4%87-%EC%84%B8%ED%8C%85-%EB%B0%A9%EB%B2%95)   
-
-<br/>
-
-<table>
-<tr>
-<td align="center">
-<a href="https://open.kakao.com/o/g6UiEPei"><img src="https://github.com/user-attachments/assets/ba7cb89e-54da-4c0b-85df-e90c60b4b726" width="140" /></a><br/>
-<sub><b><a href='https://open.kakao.com/o/g6UiEPei'>고잉봇 커뮤니티</a></b></sub>
-</td>
-<td align="center">
-<a href="https://open.kakao.com/me/trader_going"><img src="https://github.com/user-attachments/assets/e4d85c5d-1f6b-438b-885b-1c28a0ec26ab" width="140" /></a><br/>
-<sub><b><a href='https://open.kakao.com/me/trader_going'>개발자 문의</a></b></sub>
-</td>
-<td align="center">
-<a href="https://open.kakao.com/o/gYMmhcYg"><img src="https://github.com/user-attachments/assets/ab41b9b2-ec17-4243-bbdc-1f50d6ce3a58" width="140" /></a><br/>
-<sub><b><a href='https://open.kakao.com/o/gYMmhcYg'>트레이딩뷰 유저 코리아</a></b></sub>
-</td>
-</tr>
-</table>
+[최신 버전 다운로드](https://github.com/trader-going/tradingview-webhook-bot/releases/latest) · [Pine Script 예제](./example.pinescript) · [고잉봇 커뮤니티](https://open.kakao.com/o/g6UiEPei)
 
 </div>
 
-<br/>
-
 ---
 
-<br/>
+## 이 저장소의 역할
 
-## 📋 목차
+이 저장소는 **일반 사용자 배포용 저장소**입니다.
 
-- [지원 거래소](#-지원-거래소)
-- [주요 기능](#-주요-기능)
-- [빠른 시작](#-빠른-시작)
-- [화면 구성](#️-화면-구성)
-- [TradingView 웹훅 설정](#-tradingview-웹훅-설정)
-- [기능별 사용법](#-기능별-사용법)
-- [설정 옵션](#️-설정-옵션)
-- [문제 해결](#-문제-해결)
-- [주의사항](#-주의사항)
-- [라이센스](#-라이센스)
+- 소스코드는 포함하지 않습니다.
+- 설치 파일은 GitHub Releases에만 올립니다.
+- 자동 업데이트 메타데이터(`latest.yml`, `latest-mac.yml`)도 GitHub Releases asset으로 제공합니다.
+- 저장소 파일 트리에는 사용자 문서와 TradingView 예제만 둡니다.
 
-<br/>
+## 다운로드
 
-## 🏦 지원 거래소
+최신 설치 파일은 [GitHub Releases](https://github.com/trader-going/tradingview-webhook-bot/releases/latest)에서 받습니다.
+
+| 운영체제 | 권장 파일 | 비고 |
+|---|---|---|
+| Windows | `GoingBot-Setup-x.y.z.exe` | 설치형. 자동 업데이트 대상 |
+| Windows | `GoingBot-Portable-x.y.z.exe` | 무설치 수동 실행용. 자동 업데이트 대상 아님 |
+| macOS Apple Silicon | `GoingBot-x.y.z-arm64.dmg` | M1/M2/M3/M4 Mac |
+| macOS Intel | `GoingBot-x.y.z-x64.dmg` | Intel Mac |
+
+Windows SmartScreen 또는 macOS Gatekeeper 경고가 보이면 릴리즈 노트의 코드서명/공증 상태를 확인하세요. 공개 배포본은 서명된 파일만 사용하는 것을 권장합니다.
+
+## 지원 거래소
 
 | 거래소 | 현물 | 선물 | 비고 |
-|:------:|:----:|:----:|:----:|
-| <img src="https://cdn.jsdelivr.net/gh/nicehash/cryptocurrency-icons/32/color/krw.png" width="16"/> **업비트** | ✅ | — | 국내 최대 거래소 |
-| <img src="https://cdn.jsdelivr.net/gh/nicehash/cryptocurrency-icons/32/color/krw.png" width="16"/> **빗썸** | ✅ | — | 국내 거래소 |
-| <img src="https://cdn.jsdelivr.net/gh/nicehash/cryptocurrency-icons/32/color/bnb.png" width="16"/> **바이낸스** | — | ✅ | 세계 최대 거래소 (선물 전용) |
-| <img src="https://cdn.jsdelivr.net/gh/nicehash/cryptocurrency-icons/32/color/usdt.png" width="16"/> **바이비트** | — | ✅ | 파생상품 거래소 |
-| <img src="https://cdn.jsdelivr.net/gh/nicehash/cryptocurrency-icons/32/color/usdt.png" width="16"/> **OKX** | — | 🚧 | 개발 중 |
+|---|:---:|:---:|---|
+| 업비트 | 지원 | - | KRW 현물 |
+| 빗썸 | 지원 | - | KRW 현물 |
+| 바이낸스 | - | 지원 | USDT 선물 |
+| 바이비트 | - | 지원 | USDT 선물 |
+| OKX | - | 지원 | USDT 선물, passphrase 필요 |
 
-<br/>
+## 주요 기능
 
-## ✨ 주요 기능
+- TradingView Alert 웹훅 수신 후 자동 주문 실행
+- 수동 주문, 잔고/포지션 조회, 일괄 청산
+- 실시간 차트, 호가, 체결 스트림
+- `100USDT`, `50000KRW`, `25%`, `100%`, `0.01` 같은 수량 표현
+- 웹훅 Secret, IP 화이트리스트, 민감 로그 마스킹
+- API 키와 웹훅 Secret 암호화 저장
+- Windows/macOS 자동 업데이트 준비
 
-<table>
-<tr>
-<td width="50%">
+## 빠른 시작
 
-### 🤖 자동 매매
-TradingView 전략 알림 → 자동 주문 실행
+### 1. 앱 설치
 
-### 📊 실시간 차트
-캔들 차트 + 주문 타점 마커 표시
+1. [Releases](https://github.com/trader-going/tradingview-webhook-bot/releases/latest)에서 설치 파일을 다운로드합니다.
+2. Windows는 `GoingBot-Setup-x.y.z.exe`, macOS는 본인 CPU에 맞는 `.dmg`를 실행합니다.
+3. 앱을 실행한 뒤 설정 화면을 엽니다.
 
-### 💰 잔고 조회
-거래소별 잔고 및 수익률 실시간 확인
+### 2. 거래소 API 키 입력
 
-### 🔔 토스트 알림
-웹훅 수신, 주문 체결 시 데스크톱 알림
+앱의 **설정 → 거래소 API**에서 사용할 거래소의 API Key, Secret Key를 입력하고 저장합니다.
 
-</td>
-<td width="50%">
+| 거래소 | 필요 권한 | 비활성화 권장 |
+|---|---|---|
+| 업비트 | 자산조회, 주문조회, 주문하기 | 출금 |
+| 빗썸 | 잔액조회, 주문 | 출금 |
+| 바이낸스 | Reading, Futures | 출금 |
+| 바이비트 | Read-Write, Contract Orders/Positions | 출금 |
+| OKX | Read, Trade, Passphrase | 출금 |
 
-### 📐 유연한 수량 표현
-`100USDT` · `50000KRW` · `25%` · `0.01`
+API 키는 앱 설정 저장 시 OS 보안 저장소 기반으로 암호화되어 로컬 설정 파일에 기록됩니다. 설정 파일에 `enc:v1:`로 시작하는 값이 보이면 정상입니다.
 
-### 🔥 선물 거래 지원
-레버리지, 마진모드(격리/교차), 포지션 사이드
+### 3. 웹훅 Secret 확인
 
-### ⚡ 일괄 청산
-종목 선택 후 한 번에 청산 (선물 포지션 포함)
+앱의 **설정 → 웹훅 서버**에서 자동 생성된 **웹훅 Secret**을 확인합니다.
 
-### 🔒 보안
-IP 화이트리스트 + 프라이버시 모드
+GoingBot은 Secret이 없는 웹훅을 거부합니다. TradingView는 커스텀 헤더를 넣기 어렵기 때문에 Pine Script 메시지 JSON의 `secret` 필드에 이 값을 넣습니다. 직접 호출하는 클라이언트는 `X-Webhook-Secret` 헤더를 사용할 수도 있습니다.
 
-</td>
-</tr>
-</table>
+### 4. 공개 웹훅 URL 준비
 
-<br/>
+GoingBot의 기본 로컬 웹훅 주소:
 
-## 🚀 빠른 시작
-
-### 필수 준비물
-
-> **거래소 API 키** + **TradingView Pro 이상** + **포트 포워딩 가능한 환경**
-
-### Step 1 — API 키 발급
-
-<details>
-<summary><b>🟡 업비트 API 키</b></summary>
-<br/>
-
-1. [업비트](https://upbit.com) 로그인 → 마이페이지 → Open API 관리
-2. **Open API Key 발급하기** 클릭
-3. 권한 설정:
-   - ✅ 자산조회 · ✅ 주문조회 · ✅ 주문하기
-   - ❌ 출금하기 (보안상 비활성화 권장)
-4. **IP 주소 등록** (중요!)
-5. API Key와 Secret Key 복사
-
-</details>
-
-<details>
-<summary><b>🟡 빗썸 API 키</b></summary>
-<br/>
-
-1. [빗썸](https://www.bithumb.com) 로그인 → 마이페이지 → API 관리
-2. **API 생성** 클릭
-3. 권한 설정:
-   - ✅ 거래정보조회 · ✅ 주문
-   - ❌ 출금 (비활성화 권장)
-4. API Key와 Secret Key 복사
-
-</details>
-
-<details>
-<summary><b>🟠 바이낸스 API 키</b></summary>
-<br/>
-
-1. [바이낸스](https://www.binance.com) 로그인 → 프로필 → API Management
-2. **Create API** 클릭
-3. 권한 설정:
-   - ✅ Enable Reading · ✅ Enable Futures (선물 거래)
-4. IP 접근 제한 설정 권장
-5. API Key와 Secret Key 복사
-
-</details>
-
-<details>
-<summary><b>🟠 바이비트 API 키</b></summary>
-<br/>
-
-1. [바이비트](https://www.bybit.com) 로그인 → 계정 및 보안 → API 관리
-2. **새 키 만들기** 클릭
-3. 권한 설정:
-   - ✅ 거래 읽기/쓰기 · ✅ 포지션 읽기/쓰기
-4. API Key와 Secret Key 복사
-
-</details>
-
-### Step 2 — 설정 파일 구성
-
-`config.yml.example` → `config.yml`로 복사 후 API 키 입력:
-
-```yaml
-webhook:
-  port: 8000
-
-exchanges:
-  upbit:
-    api_key: "업비트_API_KEY"
-    secret_key: "업비트_SECRET_KEY"
-  bithumb:
-    api_key: "빗썸_API_KEY"
-    secret_key: "빗썸_SECRET_KEY"
-  binance:
-    api_key: "바이낸스_API_KEY"
-    secret_key: "바이낸스_SECRET_KEY"
-  bybit:
-    api_key: "바이비트_API_KEY"
-    secret_key: "바이비트_SECRET_KEY"
+```text
+http://127.0.0.1:47821/webhook
 ```
 
-### Step 3 — 프로그램 실행
+TradingView에서 PC로 웹훅을 보내려면 이 로컬 주소를 외부에서 접근 가능한 URL로 연결해야 합니다.
 
-1. `TradingView_Webhook_GoingBot.exe` 실행
-2. 면책조항 동의 (최초 1회)
-3. 상단에서 서버 상태 확인 (초록색 **"실행 중"**)
-4. 상태바에서 거래소 연결 확인
+| 방식 | 사용 예 | 비고 |
+|---|---|---|
+| ngrok | `ngrok http 47821` | 가장 간단한 테스트용 |
+| Tailscale Funnel | `tailscale funnel --https=443 47821` | 개인 장비 운영에 적합 |
+| 직접 포트포워딩 | 외부 `443` → PC `47821` | host를 `0.0.0.0` 또는 PC LAN IP로 변경 필요 |
 
-### Step 4 — 포트 포워딩
+직접 포트포워딩을 사용해도 됩니다. 이 경우 앱 설정의 웹훅 **호스트**를 `0.0.0.0` 또는 PC의 LAN IP로 변경한 뒤 앱을 재시작합니다. 공유기/방화벽에서 외부 포트를 앱이 실행 중인 PC의 `47821`로 전달하고, 가능하면 HTTPS reverse proxy를 앞에 두고 `https://내도메인/webhook` 형태로 사용하세요.
 
-TradingView에서 웹훅을 보내려면 외부에서 접근 가능해야 합니다.
+공개 URL이 준비되면 앱 설정의 **공개 웹훅 URL**에 저장합니다. 상태바에서 클릭해 TradingView에 붙여넣을 URL을 복사할 수 있습니다.
 
-<details>
-<summary><b>공유기 포트 포워딩</b></summary>
-<br/>
+### 5. 테스트 웹훅 실행
 
-1. 공유기 관리 페이지 접속 (보통 `192.168.0.1`)
-2. 포트 포워딩 설정 메뉴
-3. 설정 추가:
+1. 앱에서 웹훅 테스트 버튼을 누릅니다.
+2. 웹훅 로그에 테스트 수신 내역이 남는지 확인합니다.
+3. 그 다음 TradingView Alert를 연결합니다.
 
-| 항목 | 값 |
-|------|-----|
-| 외부 포트 | `8000` |
-| 내부 IP | 프로그램 실행 PC의 내부 IP |
-| 내부 포트 | `8000` |
-| 프로토콜 | TCP |
+## TradingView 설정
 
-</details>
+### Pine Script
 
-<details>
-<summary><b>ngrok 사용 (대안)</b></summary>
-<br/>
+이 저장소의 [example.pinescript](./example.pinescript)를 TradingView Pine Editor에 붙여넣습니다.
 
-포트 포워딩이 어려운 경우:
+스크립트 입력값:
 
-```bash
-ngrok http 8000
+- `Webhook Secret`: 앱에서 복사한 웹훅 Secret
+- `Exchange`: 주문을 보낼 거래소. 예: `UPBIT`, `BITHUMB`, `BINANCE`, `BYBIT`, `OKX`
+- `Symbol Override`: 앱에 보낼 심볼을 직접 지정할 때 사용. 비워두면 차트 심볼을 사용합니다.
+- `Entry Qty`: 진입 수량 문자열. 예: `100USDT`, `50000KRW`, `0.01`
+- `Close Qty`: 청산 수량 문자열. 예: `100%`, `50%`, `0.01`
+- `Leverage`: 선물 주문 레버리지
+- `Hedge Mode`: 거래소 계정이 hedge mode일 때 켭니다.
+
+### Alert 만들기
+
+1. 차트에 전략을 적용합니다.
+2. Alert 생성 화면에서 조건을 해당 전략으로 선택합니다.
+3. 옵션은 `Order fills only`를 사용합니다.
+4. Webhook URL에 앱에서 복사한 공개 웹훅 URL을 입력합니다.
+5. Message에는 아래 한 줄만 넣습니다.
+
+```text
+{{strategy.order.alert_message}}
 ```
 
-ngrok에서 제공하는 URL을 TradingView 웹훅 URL로 사용합니다.
+### 웹훅 payload 예시
 
-</details>
-
-<br/>
-
-## 🖥️ 화면 구성
-
-```
-┌──────────────────────────────────────────────────────────────────┐
-│  📅 날짜/시간   🌐 IP   💻 CPU/MEM   💱 환율   📈 김프          │  ← 시스템 바
-│  UPBIT BTC ₩xxx (±x.xx%)  │  BINANCE BTC $xxx (±x.xx%)        │  ← 실시간 시세
-├──────────┬───────────────────────────────────┬───────────────────┤
-│ 연결 상태  │  📋 웹훅 로그  📦 주문 내역  ⚠ Warning  │   잔고 현황      │
-│          │                                   │  ┌─────────────┐ │
-│ 수동 주문  │        💹 실시간 차트              │  │ 업비트│빗썸│…│ │
-│          │                                   │  │ BTC 0.5     │ │
-│          │                                   │  │ ETH 2.0     │ │
-│          │                                   │  └─────────────┘ │
-│          │                                   │  [⚡ 일괄청산]    │
-├──────────┴───────────────────────────────────┴───────────────────┤
-│  🟢 서버: 8000  │  🟢 업비트  │  🟢 바이낸스  │  🟢 바이비트     │  ← 상태바
-└──────────────────────────────────────────────────────────────────┘
+```json
+{
+  "secret": "앱에서_복사한_웹훅_Secret",
+  "id": "L-2026-06-27T12:00:00Z",
+  "action": "LONG_ENTRY",
+  "exchange": "BINANCE",
+  "symbol": "BTCUSDT",
+  "price": "65000",
+  "qty": "100USDT",
+  "leverage": 3,
+  "hedgeMode": false,
+  "time": "2026-06-27T12:00:00Z"
+}
 ```
 
-| 영역 | 구성 요소 |
-|:----:|----------|
-| **상단** | 날짜/시간, IP, CPU/MEM, USD/KRW 환율, 김치프리미엄, BTC/ETH 실시간 시세 |
-| **좌측** | 거래소 연결 상태, 수동 주문 패널 |
-| **중앙** | 웹훅 로그 · 주문 내역 · Warning 탭, 실시간 캔들 차트 |
-| **우측** | 거래소별 잔고 탭 (업비트/빗썸/바이낸스/바이비트), 일괄청산 |
-| **하단** | 웹훅 서버 포트, 각 거래소 연결 상태 |
+| 필드 | 설명 |
+|---|---|
+| `secret` | 앱의 웹훅 Secret. 필수 |
+| `id` | 중복 웹훅 방지용 ID |
+| `action` | `LONG_ENTRY`, `LONG_CLOSE`, `SHORT_ENTRY`, `SHORT_CLOSE` |
+| `exchange` | `UPBIT`, `BITHUMB`, `BINANCE`, `BYBIT`, `OKX` |
+| `symbol` | `BTCUSDT`, `BTC/KRW` 등 |
+| `qty` | 주문 수량 문자열 |
+| `leverage` | 선물 레버리지 |
+| `hedgeMode` | hedge mode 사용 여부 |
+| `price` | TradingView 체결 가격 또는 현재가 |
 
-<br/>
+`BINANCE`는 앱에서 Binance futures로 자동 처리됩니다.
 
-## 📡 TradingView 웹훅 설정
+## 수량 표현
 
-### Pine Script 설정
+| 예시 | 의미 |
+|---|---|
+| `100USDT` | 100 USDT 어치 주문 |
+| `50000KRW` | 50,000원 어치 주문 |
+| `25%` | close 주문에서 현재 포지션의 25% 청산 |
+| `100%` | close 주문에서 현재 포지션 전량 청산 |
+| `0.01` | 코인/계약 수량 직접 입력 |
 
-프로그램의 **"트레이딩뷰 예제 전략 복사"** 버튼을 클릭하거나, 아래 함수를 사용:
+`LONG_CLOSE`, `SHORT_CLOSE`, 앱의 일괄 청산은 reduce-only 성격으로 실행됩니다. 포지션이 없으면 청산 주문을 막고, 요청 수량이 현재 포지션보다 크면 실제 포지션 수량으로 제한합니다.
 
-```pine
-// 메시지 생성 함수
-build_msg(string action, string qtyStr) =>
-     '{"action":"' + action + '"' +
-     ',"exchange":"{{exchange}}"' +
-     ',"symbol":"{{ticker}}"' +
-     ',"price":"{{strategy.order.price}}"' +
-     ',"qty":"' + qtyStr + '"' +
-     ',"leverage":' + str.tostring(leverage) +
-     ',"time":"{{time}}"' +
-     '}'
+## 운영 팁
 
-// 진입/청산 시 사용
-if longEntry
-    strategy.entry("L", strategy.long, qty=btQty, alert_message=build_msg("LONG_ENTRY", "100USDT"))
+- 자동매매 PC는 절전 모드와 자동 재부팅을 꺼두세요.
+- 출금 권한은 API 키에서 제외하세요.
+- 거래소 API 키에는 IP 제한을 거는 것을 권장합니다.
+- 첫 연결은 반드시 소액으로 테스트하세요.
+- ngrok 무료 URL은 바뀔 수 있습니다. URL이 바뀌면 TradingView Alert의 Webhook URL도 바꿔야 합니다.
+- Tailscale Funnel이나 직접 포트포워딩을 쓰면 고정 URL 운영이 쉬워집니다.
+- 직접 포트포워딩은 방화벽과 공유기 설정이 공개 노출 범위를 결정하므로 Secret, IP 제한, HTTPS 구성을 함께 확인하세요.
 
-if longClose
-    strategy.close("L", qty=btQty, alert_message=build_msg("LONG_CLOSE", "100%"))
+## 문제 해결
+
+| 증상 | 확인할 것 |
+|---|---|
+| 웹훅 로그가 비어 있음 | TradingView Webhook URL, ngrok/Tailscale/포트포워딩 상태, 앱 웹훅 서버 실행 여부 |
+| `401 Invalid webhook secret` | Pine Script의 `Webhook Secret` 값이 앱 설정과 같은지 확인 |
+| `403 Forbidden` | IP 화이트리스트 설정 확인 |
+| 주문 실패 | 거래소 API 권한, 잔고, 최소 주문 수량, 심볼 표기, 선물 레버리지/포지션 모드 확인 |
+| 앱 업데이트가 안 보임 | GitHub Releases에 새 버전과 `latest.yml`/`latest-mac.yml`이 함께 올라갔는지 확인 |
+| 설정 파일에 `enc:v1:` 값이 보임 | 정상입니다. 앱이 민감 정보를 암호화해 저장한 값입니다. |
+
+## 릴리즈 운영
+
+관리자는 새 버전을 배포할 때 아래 asset을 GitHub Releases에 업로드합니다.
+
+Windows:
+
+- `GoingBot-Setup-x.y.z.exe`
+- `GoingBot-Setup-x.y.z.exe.blockmap`
+- `latest.yml`
+
+macOS:
+
+- `GoingBot-x.y.z-arm64.dmg`
+- `GoingBot-x.y.z-arm64.dmg.blockmap`
+- `GoingBot-x.y.z-arm64-mac.zip`
+- `GoingBot-x.y.z-x64.dmg`
+- `GoingBot-x.y.z-x64.dmg.blockmap`
+- `GoingBot-x.y.z-x64-mac.zip`
+- `latest-mac.yml`
+
+자동 업데이트가 정상 동작하려면 앱 빌드 설정의 publish 대상과 이 저장소의 GitHub Releases가 일치해야 합니다. `latest.yml`, `latest-mac.yml`은 빌드 후 파일명을 바꾸지 않은 상태로 업로드하세요.
+
+## 주의사항
+
+이 앱은 투자 조언을 제공하지 않습니다. 모든 주문과 손익 책임은 사용자에게 있습니다. 암호화폐와 선물 거래는 원금 손실 위험이 크므로 충분히 검증한 뒤 사용하세요.
+
+## 라이선스
+
+```text
+Copyright (c) 2026 Going. All rights reserved.
 ```
 
-### TradingView Alert 설정
-
-1. 차트에서 전략 적용 → **알림(Alerts)** 탭 → **+ 알림 만들기**
-2. 조건: `[전략 이름]` / 옵션: `Order fills only`
-3. **웹훅 URL** 체크 → `http://[공인IP]:8000/webhook`
-4. **메시지**란에 아래 입력:
-   ```
-   {{strategy.order.alert_message}}
-   ```
-
-### 웹훅 JSON 필드
-
-| 필드 | 설명 | 예시 |
-|:----:|------|------|
-| `action` | 주문 액션 | `LONG_ENTRY`, `LONG_CLOSE`, `SHORT_ENTRY`, `SHORT_CLOSE`, `BUY`, `SELL` |
-| `exchange` | 거래소 | `BINANCE`, `UPBIT`, `BITHUMB`, `BYBIT` |
-| `symbol` | 심볼 | `BTCUSDT`, `BTC/KRW` |
-| `qty` | 수량 | `100USDT`, `50000KRW`, `25%`, `0.01` |
-| `leverage` | 레버리지 | `1`, `5`, `10` |
-| `price` | 주문 가격 | `43123.4` |
-
-### 수량(qty) 표현 방식
-
-| 형식 | 설명 | 예시 |
-|:----:|------|------|
-| `{금액}USDT` | USDT 금액 | `100USDT` = 100 USDT 어치 |
-| `{금액}KRW` | 원화 금액 | `50000KRW` = 5만원 어치 |
-| `{비율}%` | 잔고 비율 | `25%` = 잔고의 25% |
-| `{수량}` | 코인 수량 | `0.01` = 0.01개 |
-
-### 거래소 자동 매핑
-
-> [!NOTE]
-> 웹훅에서 `BINANCE`로 보내면 자동으로 **바이낸스 선물(BINANCE_FUTURES)**로 처리됩니다.
-
-| 웹훅 exchange | 실제 처리 |
-|:-------------:|----------|
-| `BINANCE` | 바이낸스 선물 |
-| `UPBIT` | 업비트 현물 |
-| `BITHUMB` | 빗썸 현물 |
-| `BYBIT` | 바이비트 선물 |
-
-<br/>
-
-## 📖 기능별 사용법
-
-<details>
-<summary><h3>💰 잔고 조회</h3></summary>
-<br/>
-
-1. 우측 패널에서 거래소 탭 선택 (업비트/빗썸/바이낸스/바이비트)
-2. 자동으로 잔고 표시 (자동 새로고침 지원)
-3. 수동 새로고침: 상단 **새로고침** 버튼
-
-**표시 정보:** 자산명(심볼) · 보유 수량 · 평가 금액 · 수익률(%) · 평균 매수가 · 총 자산
-
-> [!TIP]
-> 잔고 행을 클릭하면 해당 심볼의 차트로 자동 전환됩니다.
-
-</details>
-
-<details>
-<summary><h3>🛒 수동 주문</h3></summary>
-<br/>
-
-좌측 **수동 주문** 패널에서:
-
-1. **거래소 선택** — 업비트(현물) · 빗썸(현물) · 바이낸스(선물) · 바이비트(선물)
-2. **심볼 입력** — `BTC` 입력 시 자동 완성: `BTC/KRW`(국내) 또는 `BTC/USDT:USDT`(해외 선물)
-3. **주문 유형** — MARKET(시장가) / LIMIT(지정가)
-4. **수량 입력** — 단위 선택: KRW/USDT 또는 코인수량
-5. **선물 옵션** (바이낸스/바이비트)
-   - 레버리지: 1x ~ 125x (빠른 선택 버튼)
-   - 마진모드: ISOLATED(격리) / CROSS(교차)
-   - 포지션 사이드: BOTH / LONG / SHORT
-6. **매수/매도** 버튼 클릭 → 확인 다이얼로그
-
-> [!IMPORTANT]
-> **업비트/빗썸 시장가 주의사항**
-> - 매수: 수량 = 원화 금액 (예: `10000` = 1만원어치)
-> - 매도: 수량 = 코인 수량 (예: `0.001` = 0.001 BTC)
-
-</details>
-
-<details>
-<summary><h3>⚡ 일괄 청산</h3></summary>
-<br/>
-
-1. 우측 잔고 패널 하단의 **일괄청산** 버튼 클릭
-2. 청산할 종목을 선택 (전체 선택 / 개별 선택 가능)
-3. **청산 실행** 클릭
-4. 종목별 성공/실패 결과 확인
-
-> [!CAUTION]
-> 일괄 청산은 되돌릴 수 없습니다. 선물 포지션은 반대 방향 시장가 주문으로 청산됩니다.
-
-</details>
-
-<details>
-<summary><h3>📋 웹훅 로그 & 주문 내역</h3></summary>
-<br/>
-
-**웹훅 로그 탭** — 날짜, 시간, 거래소, 심볼, 방향, 수량, 상태(SUCCESS/FAILED) 표시
-- **더블클릭**: 상세 정보 팝업 (원본 웹훅 JSON 확인)
-
-**주문 내역 탭** — 날짜, 시간, 거래소, 심볼, 방향, 체결수량, 단위, 체결가, 출처, 주문ID
-- 출처: `webhook`(웹훅) / `manual`(수동) — 색상 구분
-
-**하단 컨트롤** — 자동 스크롤 · DB 새로고침 · 로그 지우기
-
-</details>
-
-<details>
-<summary><h3>📊 차트</h3></summary>
-<br/>
-
-| 기능 | 설명 |
-|------|------|
-| 캔들 차트 | lightweight-charts 기반 실시간 |
-| 타임프레임 | 1m · 5m · 15m · 1h · 4h · 1d · 1w |
-| 거래소 | 업비트 · 빗썸 · 바이낸스 · 바이비트 |
-| 주문 마커 | 매수 초록 ▲ · 매도 빨강 ▼ |
-| 보조지표 | SMA · EMA · 볼린저밴드 |
-
-</details>
-
-<details>
-<summary><h3>🔔 토스트 알림</h3></summary>
-<br/>
-
-웹훅 수신 · 주문 체결 시 화면 우측 하단에 토스트 알림이 표시됩니다.
-
-설정 (설정 다이얼로그 → UI 설정):
-- 토스트 알림 활성화/비활성화
-- 표시 시간 조절 (1~30초)
-- 알림음 On/Off
-
-</details>
-
-<details>
-<summary><h3>🔒 프라이버시 모드</h3></summary>
-<br/>
-
-상단 **프라이버시** 토글을 켜면:
-- IP 주소 → `***.***.***.***`
-- 잔고 금액 → `****`
-- 웹훅 로그 상세 정보 숨김
-
-> [!TIP]
-> 방송이나 화면 공유 시 유용합니다.
-
-</details>
-
-<br/>
-
-## ⚙️ 설정 옵션
-
-상단 **설정** 버튼 클릭하여 접근
-
-<details>
-<summary><b>서버 탭</b></summary>
-<br/>
-
-| 항목 | 설명 | 기본값 |
-|------|------|:------:|
-| 포트 | 웹훅 서버 포트 | `8000` |
-
-</details>
-
-<details>
-<summary><b>API 탭</b></summary>
-<br/>
-
-각 거래소별 API 키 설정:
-- 업비트: API Key, Secret Key
-- 빗썸: API Key, Secret Key
-- 바이낸스: API Key, Secret Key
-- 바이비트: API Key, Secret Key
-- OKX: API Key, Secret Key, Passphrase
-
-</details>
-
-<details>
-<summary><b>UI 설정 탭</b></summary>
-<br/>
-
-| 카테고리 | 항목 |
-|----------|------|
-| **폰트** | 기본 폰트 크기, 폰트 종류 |
-| **잔고** | 자동 새로고침, 새로고침 간격(초) |
-| **시세 티커** | 업비트/바이낸스 시세 표시, 가격 변경 시 깜빡임 |
-| **토스트** | 활성화/비활성화, 표시 시간(1~30초), 알림음 |
-| **차트** | 주문 마커 표시 On/Off |
-| **색상 테마** | 액센트, 매수/매도, 배경, 카드 배경, 텍스트 색상 |
-
-> [!WARNING]
-> 색상 변경은 **프로그램 재시작 후** 적용됩니다.
-
-</details>
-
-<details>
-<summary><b>보안 탭</b></summary>
-<br/>
-
-**IP 화이트리스트:**
-- TradingView 공식 IP 자동 허용
-- 내부 IP 대역 (`127.x`, `192.168.x` 등) 자동 허용
-- 추가 IP 등록/삭제 가능
-
-</details>
-
-<br/>
-
-## 🔧 문제 해결
-
-<details>
-<summary><b>서버가 시작되지 않음</b> — 서버 상태가 빨간색 "오류"로 표시</summary>
-<br/>
-
-1. 포트 충돌 확인 (다른 프로그램이 8000 포트 사용 중인지)
-2. 설정에서 다른 포트로 변경 (예: `8080`)
-3. 방화벽에서 해당 포트 허용
-
-</details>
-
-<details>
-<summary><b>거래소 연결 실패</b> — 상태바에서 빨간색 "연결 실패" 표시</summary>
-<br/>
-
-1. API 키가 올바르게 입력되었는지 확인
-2. API 키의 권한 설정 확인
-3. **IP 허용 목록**에 현재 IP가 등록되었는지 확인
-4. 거래소 서버 상태 확인
-
-</details>
-
-<details>
-<summary><b>웹훅이 수신되지 않음</b> — TradingView에서 알림 발송했으나 로그에 미표시</summary>
-<br/>
-
-1. 웹훅 URL 확인 (`http://공인IP:포트/webhook`)
-2. 포트 포워딩 설정 확인
-3. 방화벽에서 포트 허용 확인
-4. TradingView 알림 설정에서 웹훅 URL 체크 확인
-5. Alert 메시지가 `{{strategy.order.alert_message}}`인지 확인
-6. ngrok 사용 시 URL이 만료되지 않았는지 확인
-
-</details>
-
-<details>
-<summary><b>주문이 실패함</b> — 상태가 FAILED로 표시</summary>
-<br/>
-
-웹훅 로그에서 해당 항목 **더블클릭** → 상세 정보 팝업에서 에러 메시지를 확인하세요.
-
-**일반적인 원인:**
-- 잔고 부족
-- 최소 주문 수량 미달
-- 심볼 형식 오류
-- API 권한 부족
-- 레버리지/마진모드 설정 오류 (선물)
-
-</details>
-
-<details>
-<summary><b>김치프리미엄이 표시되지 않음</b> — 김프가 <code>---</code>로 표시</summary>
-<br/>
-
-1. 업비트와 바이낸스 모두 BTC 가격이 표시되는지 확인
-2. 환율 데이터 수신 확인 (USD/KRW 값)
-3. 인터넷 연결 확인
-
-</details>
-
-<details>
-<summary><b>차트가 표시되지 않음</b></summary>
-<br/>
-
-1. 거래소 API 연결 확인
-2. 심볼 형식 확인 (예: `BTC/KRW`, `BTC/USDT`)
-3. 타임프레임 변경 시도
-4. 프로그램 재시작
-
-</details>
-
-<br/>
-
-## ⚠ 주의사항
-
-### 🔐 보안
-
-> [!CAUTION]
-> **API 키를 절대 타인과 공유하지 마세요.** `config.yml`에 API 키가 저장됩니다.
-
-- 출금 권한은 비활성화 권장
-- IP 제한 설정 필수
-- 화면 공유 시 프라이버시 모드 활성화
-
-### 📈 거래
-
-- **테스트 우선** — 처음에는 소액으로 테스트, 전략 검증 후 금액 증가
-- **시장가 주문** — 슬리피지 발생 가능, 유동성 낮은 코인 주의
-- **선물 거래** — 레버리지 사용 시 손실 위험 증가, 마진모드 설정 확인, 청산 가격 주의
-- **일괄 청산** — 되돌릴 수 없는 작업, 신중하게 사용
-- **24시간 운영 시** — 안정적인 인터넷 연결, UPS(무정전전원장치) 권장
-
-### ⚖️ 법적 고지
-
-- 이 프로그램은 거래 도구일 뿐, 투자 조언을 제공하지 않습니다
-- 암호화폐 거래는 높은 위험을 수반합니다
-- 투자 손실에 대한 책임은 사용자에게 있습니다
-- 거주 국가의 관련 법규를 준수하세요
-
-<br/>
-
-## 📄 라이센스
-
-```
-Copyright (c) 2025, 고잉 All rights reserved.
-```
-
-본 소프트웨어는 **개인적, 교육적, 연구 목적에 한하여** 사용이 허용됩니다.
-
-다음 행위는 **명시적으로 금지**됩니다:
-- 상업적 사용, 판매, 재판매, 임대, 서비스 제공
-- 본 소프트웨어를 이용한 수익 창출 행위
-- 사전 서면 허가 없는 재배포
-
-> 상업적 사용을 원할 경우, 저작권자의 사전 서면 허가를 받아야 합니다.
-
-<br/>
-
----
-
-<div align="center">
-
-**[트레이딩뷰 유저 코리아](https://open.kakao.com/o/gYMmhcYg)** · **[고잉봇 커뮤니티](https://open.kakao.com/o/g6UiEPei)** · **[개발자 문의](https://open.kakao.com/me/trader_going)**
-
-*마지막 업데이트: 2026년 2월*
-
-</div>
+본 소프트웨어는 개인 사용 목적에 한해 사용할 수 있습니다. 상업적 이용, 재판매, 재배포, 서비스 제공은 사전 서면 허가 없이 금지됩니다.

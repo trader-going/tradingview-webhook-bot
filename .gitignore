@@ -1,0 +1,11 @@
+# Release binaries belong in GitHub Releases, not in the repository tree.
+*.exe
+*.dmg
+*.zip
+*.blockmap
+latest.yml
+latest-mac.yml
+
+# Local OS/editor files
+.DS_Store
+Thumbs.db
