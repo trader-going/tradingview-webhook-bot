@@ -209,6 +209,7 @@ TradingView에서 PC로 웹훅을 보내려면 이 로컬 주소를 외부에서
 ## 릴리즈 운영
 
 관리자는 새 버전을 배포할 때 아래 asset을 GitHub Releases에 업로드합니다.
+세부 운영 절차는 [docs/RELEASE.md](./docs/RELEASE.md)를 기준으로 확인합니다.
 
 Windows:
 
