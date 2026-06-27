@@ -6,6 +6,9 @@ strategy("GoingBot Webhook Example", overlay=true, precision=2, pyramiding=1,
 // GoingBot TradingView alert example.
 // Alert message must be exactly:
 // {{strategy.order.alert_message}}
+//
+// WARNING: This is a webhook test strategy. It alternates entry/close orders by bar_index.
+// Do not connect it to a live alert until you replace longEntry/longClose with your real strategy logic.
 
 gWebhook = "GoingBot Webhook"
 webhookSecret = input.string("", "Webhook Secret", group=gWebhook)

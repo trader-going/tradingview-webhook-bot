@@ -18,14 +18,14 @@
 
 ---
 
-## 이 저장소의 역할
+## 처음 사용 순서
 
-이 저장소는 **일반 사용자 배포용 저장소**입니다.
-
-- 소스코드는 포함하지 않습니다.
-- 설치 파일은 GitHub Releases에만 올립니다.
-- 자동 업데이트 메타데이터(`latest.yml`, `latest-mac.yml`)도 GitHub Releases asset으로 제공합니다.
-- 저장소 파일 트리에는 사용자 문서와 TradingView 예제만 둡니다.
+1. 이 페이지의 **다운로드**에서 앱을 설치합니다.
+2. 앱 설정에서 거래소 API 키를 입력합니다.
+3. 앱 설정의 **웹훅 Secret**을 복사합니다. 이 값이 TradingView 메시지에 없으면 웹훅이 거부됩니다.
+4. ngrok, Tailscale Funnel, 직접 포트포워딩 중 하나로 **공개 웹훅 URL**을 만듭니다.
+5. TradingView Alert에 공개 웹훅 URL과 Pine Script 메시지를 연결합니다.
+6. 앱에서 테스트 웹훅을 먼저 확인한 뒤 소액으로 실거래를 검증합니다.
 
 ## 다운로드
 
@@ -38,7 +38,7 @@
 | macOS Apple Silicon | `GoingBot-x.y.z-arm64.dmg` | M1/M2/M3/M4 Mac |
 | macOS Intel | `GoingBot-x.y.z-x64.dmg` | Intel Mac |
 
-Windows SmartScreen 또는 macOS Gatekeeper 경고가 보이면 릴리즈 노트의 코드서명/공증 상태를 확인하세요. 공개 배포본은 서명된 파일만 사용하는 것을 권장합니다.
+Windows SmartScreen 또는 macOS Gatekeeper 경고가 보이면 파일을 공식 GitHub Releases에서 받았는지 먼저 확인하세요.
 
 ## 지원 거래소
 
@@ -58,7 +58,7 @@ Windows SmartScreen 또는 macOS Gatekeeper 경고가 보이면 릴리즈 노트
 - `100USDT`, `50000KRW`, `25%`, `100%`, `0.01` 같은 수량 표현
 - 웹훅 Secret, IP 화이트리스트, 민감 로그 마스킹
 - API 키와 웹훅 Secret 암호화 저장
-- Windows/macOS 자동 업데이트 준비
+- 앱 안에서 업데이트 확인, 다운로드, 재시작 설치
 
 ## 빠른 시작
 
@@ -82,9 +82,16 @@ Windows SmartScreen 또는 macOS Gatekeeper 경고가 보이면 릴리즈 노트
 
 API 키는 앱 설정 저장 시 OS 보안 저장소 기반으로 암호화되어 로컬 설정 파일에 기록됩니다. 설정 파일에 `enc:v1:`로 시작하는 값이 보이면 정상입니다.
 
-### 3. 웹훅 Secret 확인
+### 3. 웹훅 Secret 복사
 
 앱의 **설정 → 웹훅 서버**에서 자동 생성된 **웹훅 Secret**을 확인합니다.
+
+복사 순서:
+
+1. 앱에서 **설정**을 엽니다.
+2. **웹훅 서버** 섹션의 **웹훅 Secret** 값을 확인합니다.
+3. `Secret 복사` 버튼을 누르거나, `키 표시`를 켠 뒤 값을 직접 복사합니다.
+4. 이 값을 TradingView Pine Script 설정의 `Webhook Secret` 입력칸에 붙여넣습니다.
 
 GoingBot은 Secret이 없는 웹훅을 거부합니다. TradingView는 커스텀 헤더를 넣기 어렵기 때문에 Pine Script 메시지 JSON의 `secret` 필드에 이 값을 넣습니다. 직접 호출하는 클라이언트는 `X-Webhook-Secret` 헤더를 사용할 수도 있습니다.
 
@@ -100,25 +107,37 @@ TradingView에서 PC로 웹훅을 보내려면 이 로컬 주소를 외부에서
 
 | 방식 | 사용 예 | 비고 |
 |---|---|---|
-| ngrok | `ngrok http 47821` | 가장 간단한 테스트용 |
+| ngrok | `ngrok http 47821` | 가장 간단한 테스트용. 표시된 HTTPS 주소 뒤에 `/webhook`을 붙입니다. |
 | Tailscale Funnel | `tailscale funnel --https=443 47821` | 개인 장비 운영에 적합 |
-| 직접 포트포워딩 | 외부 `443` → PC `47821` | host를 `0.0.0.0` 또는 PC LAN IP로 변경 필요 |
+| 직접 포트포워딩 | 외부 포트 → PC `47821` | host를 `0.0.0.0` 또는 PC LAN IP로 변경 필요 |
 
-직접 포트포워딩을 사용해도 됩니다. 이 경우 앱 설정의 웹훅 **호스트**를 `0.0.0.0` 또는 PC의 LAN IP로 변경한 뒤 앱을 재시작합니다. 공유기/방화벽에서 외부 포트를 앱이 실행 중인 PC의 `47821`로 전달하고, 가능하면 HTTPS reverse proxy를 앞에 두고 `https://내도메인/webhook` 형태로 사용하세요.
+ngrok 예시:
+
+```text
+ngrok 화면의 Forwarding: https://abc-123.ngrok-free.app
+TradingView에 넣을 URL: https://abc-123.ngrok-free.app/webhook
+```
+
+직접 포트포워딩을 사용해도 됩니다. 이 경우 앱 설정의 웹훅 **호스트**를 `0.0.0.0` 또는 PC의 LAN IP로 변경한 뒤 앱을 재시작합니다. 공유기/방화벽에서 외부 포트를 앱이 실행 중인 PC의 `47821`로 전달합니다.
+
+주의: `443` 포트를 포워딩한다고 자동으로 HTTPS가 되는 것은 아닙니다. HTTPS 주소를 쓰려면 Caddy, Nginx, Cloudflare Tunnel 같은 HTTPS reverse proxy가 앞에 있어야 합니다. 처음 사용자는 ngrok을 먼저 권장합니다.
 
 공개 URL이 준비되면 앱 설정의 **공개 웹훅 URL**에 저장합니다. 상태바에서 클릭해 TradingView에 붙여넣을 URL을 복사할 수 있습니다.
 
 ### 5. 테스트 웹훅 실행
 
-1. 앱에서 웹훅 테스트 버튼을 누릅니다.
+1. 먼저 `웹훅 테스트 URL`을 비워둔 상태로 앱의 테스트 버튼을 누릅니다. 이 테스트는 내 PC 안에서 서버가 켜져 있는지만 확인합니다.
 2. 웹훅 로그에 테스트 수신 내역이 남는지 확인합니다.
-3. 그 다음 TradingView Alert를 연결합니다.
+3. 앱 설정의 `웹훅 테스트 URL`에 공개 웹훅 URL을 넣고 다시 테스트합니다. 예: `https://abc-123.ngrok-free.app/webhook`
+4. 공개 URL 테스트까지 성공한 뒤 TradingView Alert를 연결합니다.
 
 ## TradingView 설정
 
 ### Pine Script
 
 이 저장소의 [example.pinescript](./example.pinescript)를 TradingView Pine Editor에 붙여넣습니다.
+
+주의: 이 예제는 웹훅 연결 테스트용입니다. `bar_index`를 기준으로 진입과 청산을 번갈아 발생시키므로, 그대로 실거래 Alert에 연결하면 주문이 계속 나갈 수 있습니다. 실사용 전 `longEntry`, `longClose` 조건을 본인 전략 조건으로 바꿔야 합니다.
 
 스크립트 입력값:
 
@@ -147,7 +166,7 @@ TradingView에서 PC로 웹훅을 보내려면 이 로컬 주소를 외부에서
 ```json
 {
   "secret": "앱에서_복사한_웹훅_Secret",
-  "id": "L-2026-06-27T12:00:00Z",
+  "id": "L_ENTRY-1710000000000",
   "action": "LONG_ENTRY",
   "exchange": "BINANCE",
   "symbol": "BTCUSDT",
@@ -155,7 +174,7 @@ TradingView에서 PC로 웹훅을 보내려면 이 로컬 주소를 외부에서
   "qty": "100USDT",
   "leverage": 3,
   "hedgeMode": false,
-  "time": "2026-06-27T12:00:00Z"
+  "time": "1710000000000"
 }
 ```
 
@@ -203,31 +222,8 @@ TradingView에서 PC로 웹훅을 보내려면 이 로컬 주소를 외부에서
 | `401 Invalid webhook secret` | Pine Script의 `Webhook Secret` 값이 앱 설정과 같은지 확인 |
 | `403 Forbidden` | IP 화이트리스트 설정 확인 |
 | 주문 실패 | 거래소 API 권한, 잔고, 최소 주문 수량, 심볼 표기, 선물 레버리지/포지션 모드 확인 |
-| 앱 업데이트가 안 보임 | GitHub Releases에 새 버전과 `latest.yml`/`latest-mac.yml`이 함께 올라갔는지 확인 |
+| 앱 업데이트가 안 보임 | 앱 설정에서 `업데이트 확인`을 누르고, 현재 버전보다 새 버전이 있는지 확인 |
 | 설정 파일에 `enc:v1:` 값이 보임 | 정상입니다. 앱이 민감 정보를 암호화해 저장한 값입니다. |
-
-## 릴리즈 운영
-
-관리자는 새 버전을 배포할 때 아래 asset을 GitHub Releases에 업로드합니다.
-세부 운영 절차는 [docs/RELEASE.md](./docs/RELEASE.md)를 기준으로 확인합니다.
-
-Windows:
-
-- `GoingBot-Setup-x.y.z.exe`
-- `GoingBot-Setup-x.y.z.exe.blockmap`
-- `latest.yml`
-
-macOS:
-
-- `GoingBot-x.y.z-arm64.dmg`
-- `GoingBot-x.y.z-arm64.dmg.blockmap`
-- `GoingBot-x.y.z-arm64-mac.zip`
-- `GoingBot-x.y.z-x64.dmg`
-- `GoingBot-x.y.z-x64.dmg.blockmap`
-- `GoingBot-x.y.z-x64-mac.zip`
-- `latest-mac.yml`
-
-자동 업데이트가 정상 동작하려면 앱 빌드 설정의 publish 대상과 이 저장소의 GitHub Releases가 일치해야 합니다. `latest.yml`, `latest-mac.yml`은 빌드 후 파일명을 바꾸지 않은 상태로 업로드하세요.
 
 ## 주의사항
 
